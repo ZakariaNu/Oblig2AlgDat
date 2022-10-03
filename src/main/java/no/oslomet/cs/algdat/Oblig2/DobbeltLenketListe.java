@@ -44,24 +44,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-
-       // this();
-        this.hode = null;
-        this.hale = null;
-
-     if (a == null){
-         throw new NullPointerException("Tabellen er tom");
+      this(); //kaller den andre konstruktøren
+        
+     if (a.length == 0){
+         throw new NullPointerException("Tabellen er tom"); // exception hvis tabellen
         // Objects.requireNonNull(a, "\"Tabellen a er\n" + "null!\" ");
-        } else if (a.length == 0) {
-         return;
+
      }
 
-     
-        hode = hale = new Node<>(null);
+        hode = hale = new Node<>(null); //n
 
-         for (T elementer: a){
-             if (elementer!= null){ //finner første ikke null så - lager en ny node.
-                 hale=hale.neste = new Node<>(elementer, hale, null);
+         for (T t : a){
+             if (t != null){ //finner første ikke null så - lager en ny node.
+                 hale=hale.neste = new Node<>(t, hale, null);
+                 antall++;
                  break;
              }
          }
