@@ -52,16 +52,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         Objects.requireNonNull(a, "\"Tabellen a er\n" + "null!\" ");  //exception hvis tabellen
 
         hode = hale = new Node<>(null); //n
+        
         int teller = 0;
-
          for (T t : a){
              if (t != null){ //finner første ikke null så - lager en ny node.
-                 if (endringer == 0){
+                 if (teller == 0){
                      hale=hale.neste = new Node<>(t, hale, null);
-                     endringer++;
+                     teller++;
                  }
                  else {
-                     hale = hale.neste = new Node<>(t, hale, null); // ny verdi legges bakerst
+                     hale = hale.neste = new Node<>(t, hale, null); // ny verdi legges bak
                  }
                  antall++;
              }
