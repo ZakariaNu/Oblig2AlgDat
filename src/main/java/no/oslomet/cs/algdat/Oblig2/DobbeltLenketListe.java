@@ -116,7 +116,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+
+        indeksKontroll(indeks, false); //kjører indexkontroll på det indeksen
+       Node<T> funnetnode = finnNode(indeks); // finner noden.
+        return funnetnode.verdi; // returnerer nodens verdi.
     }
 
     @Override
@@ -126,7 +129,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+        //sjekker indeks
+        indeksKontroll(indeks,false);
+        if (nyverdi == null){ //kan ikke legge inn nullverdi
+            throw new NullPointerException();
+        }
+
+            Node <T> funnetnode = finnNode(indeks); //finne indeksen
+            T gammelnode = funnetnode.verdi; // lager ny node med den gamle verdien
+            funnetnode.verdi = nyverdi; //bytter gamle verdien my nyverdi.
+            endringer++;  //inkrimentere endringer
+      return gammelnode;  //returnerer gammelnoden
+
     }
 
     @Override
@@ -205,9 +219,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     public Iterator<T> iterator(int indeks) {
         throw new UnsupportedOperationException();
+
     }
 
-    private class DobbeltLenketListeIterator implements Iterator<T> {
+        private class DobbeltLenketListeIterator implements Iterator<T> {
         private Node<T> denne;
         private boolean fjernOK;
         private int iteratorendringer;
@@ -242,11 +257,32 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
     }
+    private Node<T> finnNode(int indeks){
+
+        Node <T> noden;
+        if (indeks < antall/2){  //Hvis indeks er mindre enn antall/2, så skal letingen etter noden starte fra hode og gå mot høyre ved hjelp av neste-pekere.
+            noden = hode;
+            for (int i = 0; i < indeks; i++){ //trevarsere gjennom nodene.
+                noden = noden.neste; //node - neste, siden oppgaven spurte om det.
+            }
+        }else {
+            noden = hale; // starter fra halen
+            for (int i = antall -1 ; i < indeks; i--){ //traverserer fra halen baklengs
+                noden = noden.forrige;  //node  - forrige siden oppgaven spurte om det.
+            }
+        }
+        return noden; //returnere noden
+    }
+
 
     public static void main(String[] args) {
-        DobbeltLenketListe<Integer> liste = new DobbeltLenketListe<>(); System.out.println(liste.toString() + " " + liste.omvendtString()); for (int i = 1; i <= 3; i++) {
-            liste.leggInn(i);
-            System.out.println(liste.toString() + " " + liste.omvendtString()); }
+
+        String[] s1 = {}, s2 = {"A"}, s3 = {null,"A",null,"B",null};
+        DobbeltLenketListe<String> l1 = new DobbeltLenketListe<>(s1);
+        DobbeltLenketListe<String> l2 = new DobbeltLenketListe<>(s2);
+        DobbeltLenketListe<String> l3 = new DobbeltLenketListe<>(s3);
+        System.out.println(l1.toString() + " " + l2.toString()
+                + " " + l3.toString() + " " + l1.omvendtString() + " " + l2.omvendtString() + " " + l3.omvendtString());
     }
 
 } // class DobbeltLenketListe
