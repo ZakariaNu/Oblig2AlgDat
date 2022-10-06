@@ -76,7 +76,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 
     public Liste<T> subliste(int fra, int til) {
-        throw new UnsupportedOperationException();
+
+       Liste<T> liste= new DobbeltLenketListe<>(); //instans av klassen DobbeltlenkedListe
+
+        fratilKontroll(antall,fra,til); //fra til kontroll for å se de er lovlige.
+
+        for (int i = fra; i < til; i++){
+            liste.leggInn(this.hent(i));
+        }
+
+        return liste;
+
     }
 
     @Override
@@ -124,8 +134,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
+/*
+        Node <T> posisjon;
+
+        if (finnNode(posisjon));
+        return;
+        else {
+            return -1;
+        }@
+         */
         throw new UnsupportedOperationException();
     }
+
+
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
@@ -134,7 +155,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (nyverdi == null){ //kan ikke legge inn nullverdi
             throw new NullPointerException();
         }
-
             Node <T> funnetnode = finnNode(indeks); //finne indeksen
             T gammelnode = funnetnode.verdi; // lager ny node med den gamle verdien
             funnetnode.verdi = nyverdi; //bytter gamle verdien my nyverdi.
@@ -221,8 +241,24 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new UnsupportedOperationException();
 
     }
+    //funnet fra kompendiet. Kap. 1.2.3 "feil og unntak"
+    public static void fratilKontroll(int antall, int fra, int til)
+    {
+        if (fra < 0)                                  // fra er negativ
+            throw new IndexOutOfBoundsException
+                    ("fra(" + fra + ") er negativ!");
 
-        private class DobbeltLenketListeIterator implements Iterator<T> {
+        if (til > antall)                          // til er utenfor tabellen
+            throw new IndexOutOfBoundsException
+                    ("til(" + til + ") > tablengde(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til
+            throw new IllegalArgumentException
+                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+    }
+
+
+    private class DobbeltLenketListeIterator implements Iterator<T> {
         private Node<T> denne;
         private boolean fjernOK;
         private int iteratorendringer;
@@ -275,14 +311,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
 
-    public static void main(String[] args) {
 
-        String[] s1 = {}, s2 = {"A"}, s3 = {null,"A",null,"B",null};
-        DobbeltLenketListe<String> l1 = new DobbeltLenketListe<>(s1);
-        DobbeltLenketListe<String> l2 = new DobbeltLenketListe<>(s2);
-        DobbeltLenketListe<String> l3 = new DobbeltLenketListe<>(s3);
-        System.out.println(l1.toString() + " " + l2.toString()
-                + " " + l3.toString() + " " + l1.omvendtString() + " " + l2.omvendtString() + " " + l3.omvendtString());
+    public static void main(String[] args) {
+        Character[] c = {'A','B','C','D','E','F','G','H','I','J',}; DobbeltLenketListe<Character> liste = new DobbeltLenketListe<>(c); System.out.println(liste.subliste(3,8)); // [D, E, F, G, H]
+         System.out.println(liste.subliste(5,5)); // []
+        System.out.println(liste.subliste(8,liste.antall())); // [I, J]
+         System.out.println(liste.subliste(0,11)); // skal kaste unntak
+
     }
 
 } // class DobbeltLenketListe
