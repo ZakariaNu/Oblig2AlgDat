@@ -55,7 +55,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         Node forrige = null;
-        
+
         for (int i = 0; i < a.length; i++) {
             if (a[i] != null) { //finner første ikke null så - lager en ny node.
                 Node noden = new Node(a[i]);
@@ -146,12 +146,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
 
-        Node funnetnode = this.hode;
+        Node node = this.hode;
         for (int i = 0; i < this.antall; i++){
-            if (verdi.equals(funnetnode.verdi)){
+            if (verdi.equals(node.verdi)){
                 return i;
             }
-            funnetnode = funnetnode.neste;
+            node = node.neste;
 
         }
         return -1;
