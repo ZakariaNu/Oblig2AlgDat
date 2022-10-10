@@ -21,7 +21,7 @@ i Oppgave 3b ) starter vi med en fratilkontroll for å se de er lovlige tall. he
 
 i Oppgave 4 ) i indeksTil() så sjekker jeg først om det er noen nullverdieer. returnerer -1 hvis den har nullverdier. en for-loop for å finne posijonen til verdi hvis den finnes i lista. metoden inneholder() returnerer true hvis den inneholder i listen og ellers returnerer false.
 
-i Oppgave 5
+i Oppgave 5 ) 
 
 i Oppgave 6
 

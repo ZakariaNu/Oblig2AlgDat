@@ -116,15 +116,33 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
+        // Kontroll
+        Objects.requireNonNull(verdi, "\"Tabellen a er\n" + "null!\" ");  // Sjekkes for null verdier
+        indeksKontroll(indeks, true); // indekskontroll
+
+        Node<T> node = hode;
+        //
+        if (tom()) {
+            hode = hale = new Node<>(verdi);  // 1 ) tom liste
+        } else if (indeks == 0) {
+            hode = new Node<>(verdi, null, hode); // 2 ) legges forrerst
+            hode.neste.forrige = hode;    // rikig plass
+        } else if (indeks == antall) {
+            hale = hale.neste = new Node<>(verdi, hale, null); // 3 ) ikke tom liste
+        } else {
+            node = finnNode(indeks);
+            node.forrige = node.forrige.neste = new Node<>(verdi, node.forrige, node);
+        }
+        antall++;
+        endringer++;
     }
 
     @Override
     public boolean inneholder(T verdi) {
 
-        if (indeksTil(verdi) !=  -1){ // hvis den inneholder i listen ? - >
+        if (indeksTil(verdi) != -1) { // hvis den inneholder i listen ? - >
             return true; // returnerer den true - >
-        }else { //ellers returnerer den false.
+        } else { //ellers returnerer den false.
             return false;
         }
     }
@@ -141,14 +159,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public int indeksTil(T verdi) {
 
-        if (verdi == null){
+        if (verdi == null) {
             return -1;
         }
 
 
         Node node = this.hode;
-        for (int i = 0; i < this.antall; i++){
-            if (verdi.equals(node.verdi)){
+        for (int i = 0; i < this.antall; i++) {
+            if (verdi.equals(node.verdi)) {
                 return i;
             }
             node = node.neste;
@@ -175,12 +193,85 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+        if(verdi == null){
+            return false;
+        }
+
+        Node<T> node = hode;
+
+        if (hode.verdi.equals(verdi)){
+            if (node.neste != null){
+                hode = node.neste;
+                hode.forrige = null;
+            }
+            else {
+                hode = null;
+                hale = null;
+            }
+            antall--;
+            endringer++;
+            return true; 
+            }
+            else if (hale.verdi.equals(verdi)){
+                node = hale;
+                hale = node.forrige;
+                hale.neste = null;
+                antall--;
+                endringer++;
+                return true;
+            }
+            else {
+                node = hode.neste;
+                while(node !=null){
+                    if (verdi.equals(node.verdi)){
+                        node.forrige.neste = node.neste;
+                        node.neste.forrige = node.forrige;
+                        antall--;
+                        endringer++;
+                        return true; 
+                    }
+                    node = node.neste;
+                }
+
+        }
+         return false;
     }
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        //Kontroll
+        indeksKontroll(indeks, false);
+
+        T retur;
+        Node<T> node = hode;
+
+        if (indeks == 0) {     //  skal første verdi fjernes?
+            retur = node.verdi; // tar vare på verdien
+            if (antall == 1) { // bare en node i lista?
+                hale = null;
+                hode = null;
+            }
+            else {
+                hode = node.neste;  // fjerner node forrerst
+                hode.forrige = null;
+            }
+        } else if (indeks == antall -1){
+            node = hale;
+            retur = hale.verdi;  // lagrer verdi
+
+            hale = node.forrige;
+            hale.neste = null;  // sletting av siste verdi
+        }
+        else {
+            node = finnNode(indeks);
+            node.forrige.neste = node.neste;
+            node.neste.forrige = node.forrige;
+        }
+
+        T verdi = node.verdi;
+        antall--; // fjerning, så antall noder i liste går ned.
+        endringer++; // endring
+        return verdi;
     }
 
     @Override
