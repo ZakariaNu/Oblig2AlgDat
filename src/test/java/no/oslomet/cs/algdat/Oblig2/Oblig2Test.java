@@ -940,7 +940,45 @@ class Oblig2Test {
         assertEquals(0, antallFeil, "Du har for mange feil i oppgave 6");
 
     }
+  /*  //// Oppgave 7 ////////////////////////////
+    @org.junit.jupiter.api.Test
+    void oppgave7() {
+        int antallFeil = 0;
 
+        DobbeltLenketListe<Integer> liste = new DobbeltLenketListe<>();
+
+        for (int i = 1; i <= 7; i++) {
+            liste.leggInn(i);
+        }
+
+        liste.nullstill();
+
+        if (liste.antall() != 0) {
+            antallFeil++;
+            System.out.println
+                    ("Oppgave 7a: Feil i antalloppdateringen i nullstill!");
+        }
+
+        if (!liste.toString().equals("[]")) {
+            antallFeil++;
+            System.out.println("Oppgave 7b: Feil i metoden nullstill()!");
+        }
+
+        if (!liste.omvendtString().equals("[]")) {
+            antallFeil++;
+            System.out.println("Oppgave 7c: Feil i metoden nullstill()!");
+        }
+
+        if (liste.indeksTil(1) != -1) {
+            antallFeil++;
+            System.out.println("Oppgave 7d: Feil i metoden nullstill()!");
+        }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 7");
+
+    }
+
+   */
     //// Oppgave 8 ////////////////////////////
     @org.junit.jupiter.api.Test
     void oppgave8() {
@@ -1073,7 +1111,7 @@ class Oblig2Test {
         }
 
         i = liste.iterator();
-        liste.nullstill();  // nullstiller etter at iteratoren er opprettet
+       liste.nullstill();  // nullstiller etter at iteratoren er opprettet
 
         try {
             i.next();

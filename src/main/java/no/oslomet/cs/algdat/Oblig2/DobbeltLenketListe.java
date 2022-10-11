@@ -4,10 +4,7 @@ package no.oslomet.cs.algdat.Oblig2;
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -174,10 +171,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         return -1;
     }
-     @Override
-        public void nullstill() {
-            throw new UnsupportedOperationException();
-        }
+
+    @Override
+    public void nullstill() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
@@ -196,48 +194,45 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        if(verdi == null){
+        if (verdi == null) {
             return false;
         }
 
         Node<T> node = hode;
 
-        if (hode.verdi.equals(verdi)){
-            if (node.neste != null){
+        if (hode.verdi.equals(verdi)) {
+            if (node.neste != null) {
                 hode = node.neste;
                 hode.forrige = null;
-            }
-            else {
+            } else {
                 hode = null;
                 hale = null;
             }
             antall--;
             endringer++;
-            return true; 
-            }
-            else if (hale.verdi.equals(verdi)){
-                node = hale;
-                hale = node.forrige;
-                hale.neste = null;
-                antall--;
-                endringer++;
-                return true;
-            }
-            else {
-                node = hode.neste;
-                while(node !=null){
-                    if (verdi.equals(node.verdi)){
-                        node.forrige.neste = node.neste;
-                        node.neste.forrige = node.forrige;
-                        antall--;
-                        endringer++;
-                        return true; 
-                    }
-                    node = node.neste;
+            return true;
+        } else if (hale.verdi.equals(verdi)) {
+            node = hale;
+            hale = node.forrige;
+            hale.neste = null;
+            antall--;
+            endringer++;
+            return true;
+        } else {
+            node = hode.neste;
+            while (node != null) {
+                if (verdi.equals(node.verdi)) {
+                    node.forrige.neste = node.neste;
+                    node.neste.forrige = node.forrige;
+                    antall--;
+                    endringer++;
+                    return true;
                 }
+                node = node.neste;
+            }
 
         }
-         return false;
+        return false;
     }
 
     @Override
@@ -253,19 +248,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             if (antall == 1) { // bare en node i lista?
                 hale = null;
                 hode = null;
-            }
-            else {
+            } else {
                 hode = node.neste;  // fjerner node forrerst
                 hode.forrige = null;
             }
-        } else if (indeks == antall -1){
+        } else if (indeks == antall - 1) {
             node = hale;
             retur = hale.verdi;  // lagrer verdi
 
             hale = node.forrige;
             hale.neste = null;  // sletting av siste verdi
-        }
-        else {
+        } else {
             node = finnNode(indeks);
             node.forrige.neste = node.neste;
             node.neste.forrige = node.forrige;
@@ -277,7 +270,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         return verdi;
     }
 
- 
 
     @Override
     public String toString() {
@@ -335,12 +327,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        //Instans av klassen iterator
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
-
+        // Kontroll
+        indeksKontroll(indeks, false);
+        return new DobbeltLenketListeIterator(indeks); 
     }
 
     //funnet fra kompendiet. Kap. 1.2.3 "feil og unntak"
@@ -371,7 +365,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            denne = finnNode(indeks);
+            fjernOK = false;  // blir sann når next() kalles
+            iteratorendringer = endringer;  // teller endringer
         }
 
         @Override
@@ -381,12 +377,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-                          throw new UnsupportedOperationException();
-
+            if (iteratorendringer != endringer) {         // sjekke om iteratorendringene er ikke lik endringer
+                throw new ConcurrentModificationException("Iteratorendringer =! endringer");
+            } else if (!hasNext()) {         // se om det er flere elemeenter i listen
+                throw new NoSuchElementException();
+            }
+            fjernOK = true;        // setter fjernOk til true
+            T verdi = denne.verdi;
+            denne = denne.neste;
+            return verdi;     //returnerer verdien
         }
 
 
     } // class DobbeltLenketListeIterator
+
     private Node<T> finnNode(int indeks) {
         Node<T> noden;
         if (indeks < antall / 2) {  //Hvis indeks er mindre enn antall/2, så skal letingen etter noden starte fra hode og gå mot høyre ved hjelp av neste-pekere.
@@ -405,13 +409,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 
     public static void main(String[] args) {
-        Character[] c = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',};
-        DobbeltLenketListe<Character> liste = new DobbeltLenketListe<>(c);
-        System.out.println(liste.subliste(3, 8)); // [D, E, F, G, H]
-        System.out.println(liste.subliste(5, 5)); // []
-        System.out.println(liste.subliste(8, liste.antall())); // [I, J]
-        System.out.println(liste.subliste(0, 11)); // skal kaste unntak
-
+        String[] navn = {"Lars","Anders","Bodil","Kari","Per","Berit"}; Liste<String> liste = new DobbeltLenketListe<>(navn);
+        liste.forEach(s -> System.out.print(s + " ")); System.out.println();
+        for (String s : liste) System.out.print(s + " ");
     }
 
 } // class DobbeltLenketListe

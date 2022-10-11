@@ -9,7 +9,7 @@ Oppgaven er levert av følgende studenter:
 I oppgaven har vi hatt følgende arbeidsfordeling:
 * Zakariya  har hatt hovedansvar for oppgave 1,2,3,4,5,6,8.
 
-# Oppgavebeskrivelsef
+# Oppgavebeskrivelse
 
 i **Oppgave 1** så sjekket jeg først om tabellen er null. etter det ser jeg om [i] er null. hvis ikke, finner første "ikke null" så - lager en ny node. Så ser jeg om hode ikke er laget hittill. Hode = noden, fordi det er den eneste noden og derfor "hode". så kjører jeg det samme som linjen før men nå for halen. så tilslutt inkrimenterer jeg antall og endringer.
 
@@ -25,4 +25,8 @@ i **Oppgave 5**  først sjekkes det for null verdier og en indekskontroll. så t
 
 i **Oppgave 6** løste jeg ved ved å implentere if tester for å se om man kan fjerne mellom forrerst eller bakkerste node. Den andre fjern metoden sjekker først med if setning om verdien finnes eller ikke med noen spesialtilfeller om det er bare er en node i lista eller om verdien ikke finnes i det hele tatt. Så en else for når verdien som skal fjernes ligger mellom to noder.
 
-i **Oppgave 8** 
+i **Oppgave 8** Next() sjekket jeg om iteratorendringer  != endringer, hvis ikke kaster jeg ut en exception. Og en NoSuchElementException hvis det ikke er flere igjen i listen. Tilslutt returneres verdien til "denne". i konstruktøren satt jeg denne = finnNode(indeks), for å finne noden som som tilhører den oppgitte indeksen.
+
+# Test
+
+**Får feil på Oppgave 8 i Oblig2test pga. oppgave nr 7 ikke har blitt gjort.**
